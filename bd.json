@@ -1,0 +1,118 @@
+{"users": {
+  "uid": 0,
+  "email": "",
+  "nombre": "",
+  "role": "admin | librero",
+  "password": "",
+  "libreriaId": 0,
+  "createdAt": ""
+},
+"librerias": {
+  "libreriaId": 0,
+  "nombre": "",
+  "direccion": "",
+  "telefono": "",
+  "createdAt": ""
+},
+
+"libros": {
+  "libroId": 0,
+  "titulo": "",
+  "autor": "",
+  "isbn": "",
+  "categoria": "",
+  "createdAt": ""
+},
+
+"editoria":{
+  "editoriaId": 0,
+  "nombre": "",
+  "direccion": "",
+  "telefono": "",
+  "DiasMinDevolucion": 0,
+  "createdAt": ""
+},
+
+"stock": {
+  "stockId": 0,
+  "libreriaId": 0,
+  "libroId": 0,
+  "cantidad": 0,
+  "estado": "comprado | en_deposito",
+  "reservado": false,
+  "fechaEntrada": "",
+  "ubicacion": "",
+  "precioVenta": 0,
+  "precioAdquisicion": 0,
+  "createdAt": ""
+},
+
+"clientes": {
+  "clienteId": 0,
+  "nombre": "",
+  "email": "",
+  "telefono": "",
+  "createdAt": ""
+},
+
+"ventas": {
+  "ventaId": 0,
+  "libreriaId": 0,
+  "precioTotal": 0,
+  "fechaVenta": "",
+  "createdAt": ""
+},
+
+"lineasDeVenta": {
+  "lineaDeVentaId": 0,
+  "ventaId": 0,
+  "libroId": 0,
+  "cantidad": 0,
+  "precioUnitario": 0,
+  "createdAt": ""
+},
+
+"reservas": {
+  "reservaId": 0,
+  "clienteId": 0,
+  "pedidoId": 0,
+  "fechaReserva": "",
+  "estado": "activa | cancelada | completada",
+  "createdAt": ""
+},
+
+"pedidos": {
+  "pedidoId": 0,
+  "editoriaId": 0,
+  "libroId": 0,
+  "fechaPedido": "",
+  "estado": "pendiente | recibido | cancelado",
+  "createdAt": ""
+},
+
+"lineasDePedido": {
+  "lineaDePedidoId": 0,
+  "pedidoId": 0,
+  "libroId": 0,
+  "cantidad": 0,
+  "createdAt": ""
+},
+
+"devoluciones": {
+  "devolucionId": 0,
+  "pedidoId": 0,
+  "cantidad": 0,
+  "fechaDevolucion": "",
+  "estado": "pendiente | procesada",
+  "createdAt": ""
+
+},
+"lineasDeDevolucion": {
+  "lineaDeDevolucionId": 0,
+  "devolucionId": 0,
+  "libroId": 0,
+  "cantidad": 0,
+  "createdAt": ""
+}
+}
+
