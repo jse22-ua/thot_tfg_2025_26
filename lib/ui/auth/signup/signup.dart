@@ -3,12 +3,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:thot_tfg_2025_26/providers/bookshop_provider.dart';
 import 'package:thot_tfg_2025_26/services/auth/auth_service.dart';
-import '../../models/user.dart';
-import '../../providers/user_provider.dart';
-import '../../services/bookshop_service.dart';
-import '../appbar.dart';
-import '../../utils/validators.dart';
-import '../home/home.dart';
+import '../../../models/user.dart';
+import '../../../providers/user_provider.dart';
+import '../../../services/bookshop_service.dart';
+import '../../widgets/appbar.dart';
+import '../../../utils/validators.dart';
+import '../../home/home.dart';
+import '../login/login.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -23,6 +24,9 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
+
+  bool _obscurePassword = true;
+  bool _obscureConfirmPassword = true;
 
   @override
   void dispose() {
@@ -46,11 +50,10 @@ class _SignUpPageState extends State<SignUpPage> {
         final newUser = User(
           nombre: _nameController.text,
           email: _emailController.text,
-          password: _passwordController.text,
           bookshopId: id,
         );
 
-        String? userId = await serviceU.addUser(newUser);
+        String? userId = await serviceU.addUser(newUser,_passwordController.text);
         String? bookshopId = await serviceBS.addBookShop(newBookshop);
 
         if(!mounted) return;
@@ -62,7 +65,7 @@ class _SignUpPageState extends State<SignUpPage> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => HomePage(),
+            builder: (context) => HomePage(id:userId),
           ),
         );
 
@@ -93,7 +96,7 @@ class _SignUpPageState extends State<SignUpPage> {
           ),
         ),
         child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(24.0, 40.0, 24.0, 40.0),
+          padding: const EdgeInsets.fromLTRB(24.0, 28.0, 24.0, 40.0),
           child: Center(
             child: Container(
               decoration: BoxDecoration(
@@ -116,10 +119,10 @@ class _SignUpPageState extends State<SignUpPage> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        'NUEVO ESCRIBA',
+                        'NUEVO USUARIO',
                         textAlign: TextAlign.center,
                         style: GoogleFonts.cinzel(
-                          fontSize: 24,
+                          fontSize: 20,
                           fontWeight: FontWeight.bold,
                           color: colorScheme.primary,
                           letterSpacing: 2,
@@ -134,12 +137,12 @@ class _SignUpPageState extends State<SignUpPage> {
                       ),
                       const SizedBox(height: 20),
                       Icon(Icons.person_add_rounded,
-                          size: 60, color: colorScheme.secondary),
+                          size: 45, color: colorScheme.secondary),
                       const SizedBox(height: 30),
                       TextFormField(
                         controller: _nameController,
                         decoration: const InputDecoration(
-                          labelText: 'Nombre',
+                          labelText: 'Nombre de usuario',
                           prefixIcon: Icon(Icons.person_outline),
                         ),
                         validator: (value) => (value == null || value.isEmpty)
@@ -161,11 +164,22 @@ class _SignUpPageState extends State<SignUpPage> {
                       const SizedBox(height: 20),
                       TextFormField(
                         controller: _passwordController,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           labelText: 'Contraseña',
-                          prefixIcon: Icon(Icons.lock_outline),
+                          prefixIcon: const Icon(Icons.lock_outline),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                              color: colorScheme.secondary,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _obscurePassword = !_obscurePassword;
+                              });
+                            },
+                          ),
                         ),
-                        obscureText: true,
+                        obscureText: _obscurePassword,
                         validator: (value) => Validators.validatePassword(
                             _passwordController.text,
                             _confirmPasswordController.text),
@@ -173,13 +187,24 @@ class _SignUpPageState extends State<SignUpPage> {
                       const SizedBox(height: 20),
                       TextFormField(
                         controller: _confirmPasswordController,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           labelText: 'Confirmar Contraseña',
-                          prefixIcon: Icon(Icons.enhanced_encryption_outlined),
+                          prefixIcon: const Icon(Icons.enhanced_encryption_outlined),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _obscureConfirmPassword ? Icons.visibility_off : Icons.visibility,
+                              color: colorScheme.secondary,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _obscureConfirmPassword = !_obscureConfirmPassword;
+                              });
+                            },
+                          ),
                         ),
-                        obscureText: true,
+                        obscureText: _obscureConfirmPassword,
                       ),
-                      const SizedBox(height: 45),
+                      const SizedBox(height: 25),
                       Row(
                         children: [
                           Expanded(
@@ -188,7 +213,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               child: OutlinedButton(
                                 onPressed: () => Navigator.pop(context),
                                 style: OutlinedButton.styleFrom(
-                                  padding: EdgeInsets.zero, // Para que no haya padding interno que parta el texto
+                                  padding: EdgeInsets.zero,
                                   side: BorderSide(color: colorScheme.primary, width: 2),
                                   shape: const BeveledRectangleBorder(),
                                   foregroundColor: colorScheme.primary,
@@ -197,7 +222,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                   'VOLVER',
                                   style: GoogleFonts.cinzel(
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 13, // Ajustamos un poco el tamaño
+                                    fontSize: 13,
                                   ),
                                 ),
                               ),
@@ -212,7 +237,6 @@ class _SignUpPageState extends State<SignUpPage> {
                                 onPressed: () {
                                   if (_formKey.currentState!.validate()) {
                                     _submitForm();
-
                                   }
                                 },
                                 style: ElevatedButton.styleFrom(
@@ -230,6 +254,29 @@ class _SignUpPageState extends State<SignUpPage> {
                           ),
                         ],
                       ),
+                      // const SizedBox(height: 15),
+                      // SizedBox(
+                      //   width: double.infinity,
+                      //   height: 55,
+                      //   child: OutlinedButton.icon(
+                      //     onPressed: () {
+                      //       // TODO: Implementar registro con Google
+                      //     },
+                      //     icon: const Icon(Icons.login_rounded),
+                      //     style: OutlinedButton.styleFrom(
+                      //       side: BorderSide(color: colorScheme.secondary, width: 1),
+                      //       shape: const BeveledRectangleBorder(),
+                      //       foregroundColor: colorScheme.primary,
+                      //     ),
+                      //     label: Text(
+                      //       'REGISTRARSE CON GOOGLE',
+                      //       style: GoogleFonts.cinzel(
+                      //         fontSize: 13,
+                      //         fontWeight: FontWeight.bold,
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
                       const SizedBox(height: 20),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -240,7 +287,10 @@ class _SignUpPageState extends State<SignUpPage> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              Navigator.pop(context);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const LoginPage()),
+                              );
                             },
                             child: Text(
                               'Inicio de sesión',

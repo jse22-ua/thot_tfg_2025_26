@@ -12,4 +12,29 @@ class Validators {
     return null;
   }
 
+  static bool validateISBN(String isbn){
+    if(isbn.length!=13){
+      return false;
+    }
+    if(!isbn.startsWith("978")&&!isbn.startsWith("979")){
+      return false;
+    }
+    List<int> numbers = isbn.split('').map(int.parse).toList();
+
+    int count = 0;
+    for(var i=0; i<numbers.length; i++){
+      if(i%2!=0){
+        count = count + numbers[i]*3;
+      }else{
+        count = count + numbers[i];
+      }
+    }
+
+    if(count%10 != 0){
+      return false;
+    }
+
+    return true;
+  }
+
 }

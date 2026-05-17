@@ -3,7 +3,6 @@
   "email": "",
   "nombre": "",
   "role": "admin | librero",
-  "password": "",
   "libreriaId": 0,
   "createdAt": ""
 },
@@ -84,7 +83,6 @@
 "pedidos": {
   "pedidoId": 0,
   "editoriaId": 0,
-  "libroId": 0,
   "fechaPedido": "",
   "estado": "pendiente | recibido | cancelado",
   "createdAt": ""

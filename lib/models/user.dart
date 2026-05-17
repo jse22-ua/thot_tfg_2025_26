@@ -1,14 +1,12 @@
 class User{
   final String nombre;
   final String email;
-  final String password;
   final bool isAdmin;
   final String bookshopId;
 
   User({
     required this.email,
     required this.nombre,
-    required this.password,
     this.isAdmin = true,
     required this.bookshopId,
   });
@@ -17,10 +15,20 @@ class User{
     return {
       'email': email,
       'nombre': nombre,
-      'password': password,
       'isAdmin': isAdmin,
       'bookshopId': bookshopId,
       'createdAt': DateTime.now().toIso8601String(),
   };
   }
+  
+  factory User.fromMap(Map<String, dynamic> map) {
+    return User(
+      email: map['email'] ?? '',
+      nombre: map['nombre'] ?? '',
+      isAdmin: map['isAdmin'] ?? true,
+      bookshopId: map['bookshopId'] ?? '',
+    );
+  }
+
+  
 }

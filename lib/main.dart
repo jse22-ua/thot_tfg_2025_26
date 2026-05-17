@@ -6,20 +6,27 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:thot_tfg_2025_26/firebase_options.dart';
 import 'package:thot_tfg_2025_26/providers/bookshop_provider.dart';
 import 'package:thot_tfg_2025_26/providers/user_provider.dart';
-import 'package:thot_tfg_2025_26/ui/bookshop/create_bookshop.dart';
+import 'package:thot_tfg_2025_26/ui/auth/AuthWrapper.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform
   );
 
+  try {
+    await dotenv.load(fileName: ".env");
+  } catch (e) {
+    print("Error cargando el archivo .env: $e");
+  }
+
   final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
-
-
   runApp(
     MultiProvider(
       providers: [
@@ -123,7 +130,8 @@ class MyApp extends StatelessWidget {
           displayColor: lapisLazuli,
         ),
       ),
-      home: const CreateBookShop(),
+      home: AuthWrapper(),
     );
   }
 }
+
